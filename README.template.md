@@ -111,7 +111,7 @@
 
 ---
 
-# Realistic Terrain, Stone, Wood, Minerals, Fabric & Concrete 256X Resource Pack (English)
+# Realistic Terrain, Stone, Wood, Minerals, Fabric & Concrete 256X Resource Pack
 
 A high-resolution realistic resource pack for Minecraft Java Edition. Vanilla 16×16 block
 textures are scaled up to 256×256, which is 16× the detail. Grass, stone, wood, minerals, fabric
