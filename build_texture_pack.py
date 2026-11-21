@@ -268,9 +268,9 @@ ov.save(os.path.join(BLK, "grass_block_side_overlay.png"))
 
 # ---- 元数据 ----
 meta = {"pack": {
-    "description": "写实地形/石材/木材/矿物 256X · 菌核流动动画 · Realistic Terrain, Wood & Minerals",
-    "pack_format": 48,
-    "supported_formats": [41, 120]
+    "description": "写实地形/石材/木材/矿物/织物 256X · 菌核流动动画 · Realistic Terrain, Wood, Minerals & Fabric",
+    "pack_format": 75,
+    "supported_formats": [75, 75]
 }}
 with open(os.path.join(OUT, "pack.mcmeta"), "w", encoding="utf-8") as f:
     json.dump(meta, f, ensure_ascii=False, indent=2)
@@ -291,31 +291,31 @@ for idx, fn in enumerate(_all_tex):
     icon.paste(t.resize((_cell, _cell)), ((idx % _cols) * _cell, (idx // _cols) * _cell))
 icon.save(os.path.join(OUT, "pack.png"))
 
-readme = """# 写实地形、石材、木材与矿物 256X 材质包
+readme = """# 写实地形、石材、木材、矿物与织物 256X 材质包
 
 面向 **Minecraft Java 版**的高分辨率写实材质包。把原版 16×16 的方块贴图扩展到 256×256
-（16 倍细节），在保留原版方块辨识度的前提下，追求更接近真实的草地、岩石、木质与矿物观感。
-适用于 1.20.5+，兼容至 1.21.x（`pack_format: 48`，支持格式 41–120）。
+（16 倍细节），在保留原版方块辨识度的前提下，追求更接近真实的草地、岩石、木质、矿物与织物观感。
+**专为 Minecraft Java 版 1.21.11 制作**（`pack_format: 75`，支持格式 75–75，
+覆盖 1.21.11-pre1 至 1.21.11）。更早版本无法加载本包。
 
 ## 项目目的
 原版贴图在低分辨率下细节有限，放大后容易模糊、出现色块。本包重新制作地形、石材、木材、
-矿物与压缩方块四大类方块的贴图，让画面更细腻写实，同时严格兼容原版模型与方块映射——台阶、
-楼梯、墙、压力板等形状变体自动复用基础贴图，无需单独制作。
+矿物与压缩方块、织物（羊毛/床/旗帜）五大类方块的贴图，让画面更细腻写实，同时严格兼容原版
+模型与方块映射——台阶、楼梯、墙、压力板等形状变体自动复用基础贴图，无需单独制作。
 
 ## 技术特色
-- **混合工艺**：地形与石材以 AI 生成的写实素材为底，经裁切去水印、缩放、无缝化与边缘
-  亮度校正；木材与矿物/压缩方块完全由程序化算法生成，零 AI 积分消耗。
 - **程序化写实木纹**：纯 Pillow 实现可缩放 fBm 值噪声、径向年轮与特征色映射，白桦皮孔、
   金合欢橙红、樱花木粉等细节按树种单独处理。
 - **程序化矿物方块**：周期 Voronoi 生成宝石切面、金属拉丝配错缝锭板倒角、岩基嵌矿粒，
   17 种方块共 20 张贴图全部四边无缝。
+- **AI 织物 + 程序化染色**：羊毛/床/旗帜以 AI 生成的写实织物为底，裁水印后边缘渐变融合无缝，
+  再用 Minecraft 标准 16 色色板染色，48 张贴图质感真实、配色准确、零接缝。
 - **无边框草地**：消除素材边缘受光形成的白框，平铺后读不出方块网格轮廓。
 - **源头无缝**：原木侧面改用周期噪声生成树皮与裂纹，接缝在生成阶段根治，而非事后缝合。
 - **菌核流动动画**：纵向 sprite sheet 配合 `.png.mcmeta`，以 `interpolate` 平滑过渡，
   循环闭合无跳变。
-- **规范的资源包结构**：zip 根目录直接包含 `pack.mcmeta`、`pack.png`、`assets/`。
 
-成品共 **83 张贴图 + 2 个动画元数据文件**。
+成品共 **131 张贴图 + 2 个动画元数据文件**。
 
 ## 主要贴图清单
 - grass_block_top.png 草方块顶部（写实草地，已做无边框处理：消除素材边缘受光白框，平铺无网格轮廓）
@@ -364,10 +364,19 @@ readme = """# 写实地形、石材、木材与矿物 256X 材质包
 - 竹块：`bamboo_block.png` + `bamboo_block_top.png`（侧面竹条竹节 + 顶面横截面）
 - 去皮竹块：`stripped_bamboo_block.png` + `stripped_bamboo_block_top.png`（亮黄绿）
 
+## 织物：羊毛、床与旗帜（16 色，AI 底图染色）
+- 羊毛：`block/<color>_wool.png` ×16（蓬松羊毛绒，AI 写实素材染色，边缘融合无缝）
+- 床：`entity/bed/<color>.png` ×16（细密织纹床品，512×256 保持原版 2:1 比例）
+- 旗帜：`entity/banner/<color>_banner.png` ×16（粗帆布织纹，256×256）
+- 16 色：white / light_gray / gray / black / brown / red / orange / yellow / lime / green /
+  cyan / light_blue / blue / purple / magenta / pink，采用 Minecraft 标准羊毛色板
+- 地毯、羊毛台阶、羊毛楼梯无独立贴图，游戏自动复用对应颜色的羊毛贴图
+- 挽具（1.21.4+）暂未制作
+
 台阶、楼梯、墙、压力板、按钮等形状变体无需单独贴图，游戏会自动复用上方原方块贴图。
 
-除菌核侧面的动画 sprite sheet（256×2048，8 帧纵向排列）外，所有贴图均为 256×256 像素。
-錾制方块为整面居中浮雕，与游戏原版一致，不做平铺。
+除菌核侧面的动画 sprite sheet（256×2048，8 帧纵向排列）与床贴图（512×256，保持原版 2:1
+比例）外，其余贴图均为 256×256 像素。錾制方块为整面居中浮雕，与游戏原版一致，不做平铺。
 
 ## 使用方式
 1. 打开游戏目录 .minecraft/resourcepacks
@@ -382,40 +391,39 @@ readme = """# 写实地形、石材、木材与矿物 256X 材质包
 
 ---
 
-# Realistic Terrain, Stone, Wood & Minerals 256X Resource Pack (English)
+# Realistic Terrain, Stone, Wood, Minerals & Fabric 256X Resource Pack (English)
 
 A high-resolution realistic resource pack for **Minecraft Java Edition**. It expands the original
 16×16 block textures to 256×256 (16× the detail), pursuing a more lifelike look for grass, stone,
-wood and minerals while preserving the recognizability of vanilla blocks. Compatible with 1.20.5+
-through 1.21.x (`pack_format: 48`, supports formats 41–120).
+wood, minerals and fabric while preserving the recognizability of vanilla blocks. **Made specifically
+for Minecraft Java Edition 1.21.11** (`pack_format: 75`, supports formats 75–75, covering
+1.21.11-pre1 through 1.21.11). Older versions cannot load this pack.
 
 ## Overview
 Vanilla textures are limited at low resolution and become blurry or blocky when enlarged. This pack
-remakes the textures for four major categories — terrain, stone, wood, and mineral/compressed
-blocks — for a finer, more realistic look, while staying strictly compatible with vanilla models
-and block mappings. Shape variants such as slabs, stairs, walls and pressure plates automatically
-reuse the base block textures and need no separate files.
+remakes the textures for five major categories — terrain, stone, wood, mineral/compressed blocks,
+and fabric (wool / beds / banners) — for a finer, more realistic look, while staying strictly
+compatible with vanilla models and block mappings. Shape variants such as slabs, stairs, walls and
+pressure plates automatically reuse the base block textures and need no separate files.
 
 ## Technical Highlights
-- **Hybrid pipeline**: Terrain and stone are based on AI-generated realistic source images,
-  cropped to remove watermarks, resized, made seamless and edge-brightness corrected; wood and
-  mineral/compressed blocks are fully procedural with zero AI credit cost.
 - **Procedural realistic wood**: Pure Pillow implementation of scalable fBm value noise, radial
   growth rings and species-specific color mapping; birch lenticels, acacia's orange-red and
   cherry's pink are handled per species.
 - **Procedural mineral blocks**: Periodic Voronoi for gem facets, brushed metal with staggered
   ingot bevels, and ore grains embedded in rock — all 20 textures for 17 blocks are seamlessly
   tileable on all four edges.
+- **AI fabric + procedural dyeing**: Wool / bed / banner are based on AI-generated realistic
+  fabric, cropped to remove watermarks and made seamless via edge blending, then dyed with the
+  standard Minecraft 16-color palette — 48 textures, accurate colors, zero seams.
 - **Borderless grass**: Removes the edge-lighting halo from the source image, so tiled grass
   shows no grid outlines.
 - **Seamless at the source**: Log sides use periodic noise for bark and cracks, eliminating
   seams during generation rather than patching them afterward.
 - **Flowing stem animation**: A vertical sprite sheet paired with `.png.mcmeta`, smoothed with
   `interpolate` and looped without visible jumps.
-- **Standard resource pack structure**: The zip root directly contains `pack.mcmeta`,
-  `pack.png` and `assets/`.
 
-The pack contains **83 textures + 2 animation metadata files**.
+The pack contains **131 textures + 2 animation metadata files**.
 
 ## Main Texture List
 - grass_block_top.png Grass block top (realistic grass, borderless: edge-lighting halo removed, no grid outlines when tiled)
@@ -467,11 +475,21 @@ The pack contains **83 textures + 2 animation metadata files**.
 - Bamboo block: `bamboo_block.png` + `bamboo_block_top.png` (side strips & nodes + top cross-section)
 - Stripped bamboo block: `stripped_bamboo_block.png` + `stripped_bamboo_block_top.png` (bright yellow-green)
 
+## Fabric: Wool, Beds & Banners (16 colors, AI base + dyed)
+- Wool: `block/<color>_wool.png` ×16 (fluffy fleece, dyed from AI realistic source, edge-blended seamless)
+- Bed: `entity/bed/<color>.png` ×16 (fine woven bed linen, 512×256 keeping vanilla 2:1 ratio)
+- Banner: `entity/banner/<color>_banner.png` ×16 (coarse canvas weave, 256×256)
+- 16 colors: white / light_gray / gray / black / brown / red / orange / yellow / lime / green /
+  cyan / light_blue / blue / purple / magenta / pink, using the standard Minecraft wool palette
+- Carpet, wool slabs and wool stairs have no separate textures — the game reuses the matching wool texture
+- Harness (1.21.4+) is not included yet
+
 Shape variants such as slabs, stairs, walls, pressure plates and buttons need no separate textures —
 the game automatically reuses the base block textures listed above.
 
-Except for the animated stem sprite sheets (256×2048, 8 frames stacked vertically), all textures
-are 256×256 pixels. Chiseled blocks use a single centered relief, matching vanilla, and are not tiled.
+Except for the animated stem sprite sheets (256×2048, 8 frames stacked vertically) and bed textures
+(512×256, keeping the vanilla 2:1 ratio), all textures are 256×256 pixels. Chiseled blocks use a
+single centered relief, matching vanilla, and are not tiled.
 
 ## How to Use
 1. Open the game directory `.minecraft/resourcepacks`
