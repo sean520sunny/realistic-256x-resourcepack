@@ -73,7 +73,7 @@
 
 ## 织物：羊毛、床与旗帜（16 色，AI 底图染色）
 - 羊毛：`block/<color>_wool.png` ×16（蓬松羊毛绒，AI 写实素材染色，边缘融合无缝）
-- 床：`entity/bed/<color>.png` ×16（细密织纹床品，512×256 保持原版 2:1 比例）
+- 床：`entity/bed/<color>.png` ×16（512×512，按原版 UV 分区：白色枕头 + 染色床单 + 木质床架）
 - 旗帜：`entity/banner/<color>_banner.png` ×16（粗帆布织纹，256×256）
 - 16 色：white / light_gray / gray / black / brown / red / orange / yellow / lime / green /
   cyan / light_blue / blue / purple / magenta / pink，采用 Minecraft 标准羊毛色板
@@ -82,8 +82,9 @@
 
 台阶、楼梯、墙、压力板、按钮等形状变体无需单独贴图，游戏会自动复用上方原方块贴图。
 
-除菌核侧面的动画 sprite sheet（256×2048，8 帧纵向排列）与床贴图（512×256，保持原版 2:1
-比例）外，其余贴图均为 256×256 像素。錾制方块为整面居中浮雕，与游戏原版一致，不做平铺。
+除菌核侧面的动画 sprite sheet（256×2048，8 帧纵向排列）与床贴图（512×512，原版 64×64 的
+8 倍，按原版 UV 分区制作）外，其余贴图均为 256×256 像素。錾制方块为整面居中浮雕，与游戏
+原版一致，不做平铺。
 
 ## 使用方式
 1. 打开游戏目录 .minecraft/resourcepacks
@@ -184,7 +185,7 @@ The pack contains **131 textures + 2 animation metadata files**.
 
 ## Fabric: Wool, Beds & Banners (16 colors, AI base + dyed)
 - Wool: `block/<color>_wool.png` ×16 (fluffy fleece, dyed from AI realistic source, edge-blended seamless)
-- Bed: `entity/bed/<color>.png` ×16 (fine woven bed linen, 512×256 keeping vanilla 2:1 ratio)
+- Bed: `entity/bed/<color>.png` ×16 (512×512, vanilla UV layout: white pillow + dyed sheet + wooden frame)
 - Banner: `entity/banner/<color>_banner.png` ×16 (coarse canvas weave, 256×256)
 - 16 colors: white / light_gray / gray / black / brown / red / orange / yellow / lime / green /
   cyan / light_blue / blue / purple / magenta / pink, using the standard Minecraft wool palette
@@ -195,8 +196,8 @@ Shape variants such as slabs, stairs, walls, pressure plates and buttons need no
 the game automatically reuses the base block textures listed above.
 
 Except for the animated stem sprite sheets (256×2048, 8 frames stacked vertically) and bed textures
-(512×256, keeping the vanilla 2:1 ratio), all textures are 256×256 pixels. Chiseled blocks use a
-single centered relief, matching vanilla, and are not tiled.
+(512×512, 8× the vanilla 64×64, made with the vanilla UV layout), all textures are 256×256 pixels.
+Chiseled blocks use a single centered relief, matching vanilla, and are not tiled.
 
 ## How to Use
 1. Open the game directory `.minecraft/resourcepacks`

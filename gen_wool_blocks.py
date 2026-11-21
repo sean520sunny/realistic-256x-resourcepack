@@ -7,7 +7,8 @@
 
 输出：
   block/<color>_wool.png        256x256  (16)
-  entity/bed/<color>.png        512x256  (16)  原版 64x32 的 8 倍，保持 2:1
+  entity/bed/<color>.png        512x512  (16)  原版 64x64 的 8 倍，按原版 UV 分区
+                                                  (白色枕头 + 染色床单 + 木质床架)
   entity/banner/<color>_banner.png 256x256 (16)
 """
 import os, glob, math
@@ -22,6 +23,9 @@ os.makedirs(OUT, exist_ok=True)
 F_WOOL   = os.path.join(SRC, "A_seamless_tileable_top_down_f_2026-11-21T06-15-33.png")
 F_BANNER = os.path.join(SRC, "A_seamless_tileable_top_down_f_2026-11-21T06-16-01.png")
 F_BED    = os.path.join(SRC, "A_seamless_tileable_top_down_f_2026-11-21T06-16-04.png")
+# 床架木纹：复用现有橡木木板贴图（浅棕，接近原版床架色）
+F_BEDFRAME = os.path.join(BASE, "realistic-256x-pack", "assets", "minecraft", "textures",
+                          "block", "oak_planks.png")
 
 # Minecraft 标准 16 色羊毛色板（wiki 值）
 COLORS = [
@@ -115,6 +119,88 @@ def tint(gray, strength, base):
     return out
 
 
+def make_bed(gray_bed, strength_bed, base):
+    """
+    按原版床 UV 布局合成床贴图 512×512（原版 64×64 的 8 倍）。
+    原版测绘（64×64）：
+      白色枕头 (3,4)-(28,15)   浅灰边 + 白色中央 + 缝线
+      染色床单 (3,16)-(28,44)  主体 + 侧面
+      木质床架 (28,6)-(44,44)  竖板 + 顶部/底部横板、床腿
+      其余透明
+    枕头固定白色、床架固定木色，只有床单参与 16 色染色。
+    """
+    S = 512
+    k = S / 64  # 8
+    bed = Image.new("RGBA", (S, S), (0, 0, 0, 0))
+
+    # 1) 染色床单：原版 (3,16)-(28,44)
+    sheet = tint(gray_bed, strength_bed, base)
+    d = ImageDraw.Draw(bed, "RGBA")
+    # 主体正面 (3,20)-(28,44)
+    d.rectangle([int(3*k), int(20*k), int(28*k)-1, int(44*k)-1], fill=(*base, 255))
+    # 上面薄层 (3,16)-(28,20) 用织物染色贴图（保留明暗）
+    bed.paste(sheet.crop((int(3*k), int(16*k), int(28*k), int(20*k))),
+              (int(3*k), int(16*k)))
+    # 床单正面叠加织物纹理（乘色），保留质感
+    tex = sheet.crop((int(3*k), int(20*k), int(28*k), int(44*k)))
+    # 用 alpha 把纹理融进纯色：以 base 为底，纹理明暗作为 alpha 覆盖
+    tp = tex.load(); bp = bed.load()
+    mean = sum(sum(tex.getpixel((x, y))) / 3 for y in range(0, tex.height, 8)
+               for x in range(0, tex.width, 8)) / (len(range(0, tex.height, 8)) * len(range(0, tex.width, 8)))
+    for yy in range(tex.height):
+        for xx in range(tex.width):
+            c = tp[xx, yy]
+            lum = sum(c) / 3
+            # 相对明暗映射为轻微提亮/压暗，叠在纯色床单上
+            f = max(0.75, min(1.25, lum / mean if mean else 1))
+            X, Y = int(3*k)+xx, int(20*k)+yy
+            bp[X, Y] = (min(255, int(base[0]*f)), min(255, int(base[1]*f)),
+                        min(255, int(base[2]*f)), 255)
+
+    # 2) 白色枕头：原版 (3,4)-(28,15)，浅灰边 + 白中央 + 浅灰缝线
+    pw0, ph0, pw1, ph1 = int(3*k), int(4*k), int(28*k), int(15*k)
+    # 枕芯白（用白色羊毛织物纹理）
+    pillow = tint(gray_bed, strength_bed, (250, 250, 250))
+    bed.paste(pillow.crop((0, 0, pw1-pw0, ph1-ph0)), (pw0, ph0))
+    d = ImageDraw.Draw(bed, "RGBA")
+    # 浅灰枕套边框（原版是稍带灰度的枕套外沿）
+    d.rectangle([pw0, ph0, pw1-1, ph1-1], outline=(198, 200, 202, 255), width=max(2, int(k)))
+    # 中央浅灰小方块（原版枕头中央的浅色凹块，不是竖线）
+    cx0 = pw0 + int(8*k); cx1 = pw1 - int(8*k)
+    cy0 = ph0 + int(3*k); cy1 = ph1 - int(3*k)
+    d.rectangle([cx0, cy0, cx1, cy1], fill=(214, 216, 218, 200))
+
+    # 3) 木质床架：用 oak_planks 缩放铺到原版木架区域
+    frame = Image.open(F_BEDFRAME).convert("RGB").resize((S, S), Image.LANCZOS)
+    fp = frame.load(); bp = bed.load()
+    # 原版木架像素区（64×64 坐标）
+    wood_rects = [
+        (0, 6, 3, 14),      # 左上窄边（枕头左侧）
+        (0, 16, 3, 44),     # 左侧床身边
+        (28, 6, 44, 22),    # 床头板右侧竖板
+        (28, 22, 44, 44),   # 床身右侧板
+        (6, 0, 22, 4),      # 床头顶部横板
+        (52, 4, 58, 20),    # 右上床腿立柱
+        (44, 10, 58, 14),   # 右上横档
+    ]
+    for (x0, y0, x1, y1) in wood_rects:
+        X0, Y0, X1, Y1 = int(x0*k), int(y0*k), int(x1*k), int(y1*k)
+        for Y in range(Y0, Y1):
+            for X in range(X0, X1):
+                if 0 <= X < S and 0 <= Y < S:
+                    bp[X, Y] = (*fp[X, Y], 255)
+    # 床架横向板缝：模拟原版床板的分段（每隔一段一条暗线）
+    d = ImageDraw.Draw(bed, "RGBA")
+    for (x0, y0, x1, y1) in [(28, 6, 44, 22), (28, 22, 44, 44)]:
+        X0, X1 = int(x0*k), int(x1*k)
+        for gy in range(y0+6, y1, 8):
+            Y = int(gy*k)
+            d.line([(X0, Y), (X1-1, Y)], fill=(70, 48, 26, 150), width=max(2, int(k)))
+            d.line([(X0, Y+2), (X1-1, Y+2)], fill=(200, 170, 120, 90), width=1)
+
+    return bed
+
+
 def seam_diff(path):
     im = Image.open(path).convert("RGB")
     p = im.load(); w, h = im.size
@@ -132,12 +218,12 @@ if __name__ == "__main__":
     print("Preparing seamless grayscale bases ...")
     g_wool, s_wool = gen_layer(F_WOOL, (256, 256), strength=2.0)
     g_banner, s_banner = gen_layer(F_BANNER, (256, 256), strength=1.5)
-    g_bed, s_bed = gen_layer(F_BED, (512, 256), strength=1.4)
+    g_bed, s_bed = gen_layer(F_BED, (512, 512), strength=1.4)
 
     for name, base, cn in COLORS:
         tint(g_wool, s_wool, base).save(os.path.join(OUT, f"{name}_wool.png"))
         tint(g_banner, s_banner, base).save(os.path.join(OUT, f"{name}_banner.png"))
-        tint(g_bed, s_bed, base).save(os.path.join(OUT, f"{name}_bed.png"))
+        make_bed(g_bed, s_bed, base).save(os.path.join(OUT, f"{name}_bed.png"))
         print(f"  {name:11s} {cn}")
 
     # 接缝抽检
@@ -162,7 +248,7 @@ if __name__ == "__main__":
         r, c = divmod(i, 8)
         im = Image.open(os.path.join(OUT, f"{name}_bed.png")).resize((cw, ch // 2))
         prev.paste(im, (ox + c * cw, by + r * (ch // 2 + 2)))
-    d.text((ox, by + 2 * (ch // 2 + 2) + 2), "BED x16 (2:1)", fill=(235, 235, 235))
+    d.text((ox, by + 2 * (ch // 2 + 2) + 2), "BED x16 (512x512, white pillow + wood frame)", fill=(235, 235, 235))
     # 旗帜区 8x2
     fy = by + 2 * (ch // 2 + 2) + 18
     for i, (name, _b, _cn) in enumerate(COLORS):
