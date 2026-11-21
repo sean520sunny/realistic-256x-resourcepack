@@ -10,8 +10,6 @@
 楼梯、墙、压力板等形状变体自动复用基础贴图，无需单独制作。
 
 ## 技术特色
-- **混合工艺**：地形与石材以 AI 生成的写实素材为底，经裁切去水印、缩放、无缝化与边缘
-  亮度校正；木材与矿物/压缩方块完全由程序化算法生成，零 AI 积分消耗。
 - **程序化写实木纹**：纯 Pillow 实现可缩放 fBm 值噪声、径向年轮与特征色映射，白桦皮孔、
   金合欢橙红、樱花木粉等细节按树种单独处理。
 - **程序化矿物方块**：周期 Voronoi 生成宝石切面、金属拉丝配错缝锭板倒角、岩基嵌矿粒，
@@ -20,7 +18,6 @@
 - **源头无缝**：原木侧面改用周期噪声生成树皮与裂纹，接缝在生成阶段根治，而非事后缝合。
 - **菌核流动动画**：纵向 sprite sheet 配合 `.png.mcmeta`，以 `interpolate` 平滑过渡，
   循环闭合无跳变。
-- **规范的资源包结构**：zip 根目录直接包含 `pack.mcmeta`、`pack.png`、`assets/`。
 
 成品共 **83 张贴图 + 2 个动画元数据文件**。
 
@@ -104,9 +101,6 @@ and block mappings. Shape variants such as slabs, stairs, walls and pressure pla
 reuse the base block textures and need no separate files.
 
 ## Technical Highlights
-- **Hybrid pipeline**: Terrain and stone are based on AI-generated realistic source images,
-  cropped to remove watermarks, resized, made seamless and edge-brightness corrected; wood and
-  mineral/compressed blocks are fully procedural with zero AI credit cost.
 - **Procedural realistic wood**: Pure Pillow implementation of scalable fBm value noise, radial
   growth rings and species-specific color mapping; birch lenticels, acacia's orange-red and
   cherry's pink are handled per species.
@@ -119,8 +113,6 @@ reuse the base block textures and need no separate files.
   seams during generation rather than patching them afterward.
 - **Flowing stem animation**: A vertical sprite sheet paired with `.png.mcmeta`, smoothed with
   `interpolate` and looped without visible jumps.
-- **Standard resource pack structure**: The zip root directly contains `pack.mcmeta`,
-  `pack.png` and `assets/`.
 
 The pack contains **83 textures + 2 animation metadata files**.
 
