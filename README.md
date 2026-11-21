@@ -1,14 +1,14 @@
-# 写实地形、石材、木材、矿物与织物 256X 材质包
+# 写实地形、石材、木材、矿物、织物与混凝土 256X 材质包
 
 面向 **Minecraft Java 版**的高分辨率写实材质包。把原版 16×16 的方块贴图扩展到 256×256
-（16 倍细节），在保留原版方块辨识度的前提下，追求更接近真实的草地、岩石、木质、矿物与织物观感。
+（16 倍细节），在保留原版方块辨识度的前提下，追求更接近真实的草地、岩石、木质、矿物、织物与混凝土观感。
 **专为 Minecraft Java 版 1.21.11 制作**（`pack_format: 75`，支持格式 75–75，
 覆盖 1.21.11-pre1 至 1.21.11）。更早版本无法加载本包。
 
 ## 项目目的
 原版贴图在低分辨率下细节有限，放大后容易模糊、出现色块。本包重新制作地形、石材、木材、
-矿物与压缩方块、织物（羊毛/床/旗帜）五大类方块的贴图，让画面更细腻写实，同时严格兼容原版
-模型与方块映射——台阶、楼梯、墙、压力板等形状变体自动复用基础贴图，无需单独制作。
+矿物与压缩方块、织物（羊毛/床/旗帜）、混凝土与混凝土粉末六大类方块的贴图，让画面更细腻写实，
+同时严格兼容原版模型与方块映射——台阶、楼梯、墙、压力板等形状变体自动复用基础贴图，无需单独制作。
 
 ## 技术特色
 - **程序化写实木纹**：纯 Pillow 实现可缩放 fBm 值噪声、径向年轮与特征色映射，白桦皮孔、
@@ -17,12 +17,14 @@
   17 种方块共 20 张贴图全部四边无缝。
 - **AI 织物 + 程序化染色**：羊毛/床/旗帜以 AI 生成的写实织物为底，裁水印后边缘渐变融合无缝，
   再用 Minecraft 标准 16 色色板染色，48 张贴图质感真实、配色准确、零接缝。
+- **混凝土与粉末**：2 张 AI 写实底图（致密水泥 / 松散粉粒）经亮度归一压淡杂质、程序化染色
+  成 16 色混凝土 + 16 色粉末，32 张贴图质感区分明显、四边无缝。
 - **无边框草地**：消除素材边缘受光形成的白框，平铺后读不出方块网格轮廓。
 - **源头无缝**：原木侧面改用周期噪声生成树皮与裂纹，接缝在生成阶段根治，而非事后缝合。
 - **菌核流动动画**：纵向 sprite sheet 配合 `.png.mcmeta`，以 `interpolate` 平滑过渡，
   循环闭合无跳变。
 
-成品共 **131 张贴图 + 2 个动画元数据文件**。
+成品共 **163 张贴图 + 2 个动画元数据文件**。
 
 ## 主要贴图清单
 - grass_block_top.png 草方块顶部（写实草地，已做无边框处理：消除素材边缘受光白框，平铺无网格轮廓）
@@ -80,6 +82,12 @@
 - 地毯、羊毛台阶、羊毛楼梯无独立贴图，游戏自动复用对应颜色的羊毛贴图
 - 挽具（1.21.4+）暂未制作
 
+## 混凝土与混凝土粉末（16 色，AI 底图染色）
+- 混凝土：`block/<color>_concrete.png` ×16（致密水泥表面，细孔与骨料，AI 底图染色）
+- 混凝土粉末：`block/<color>_concrete_powder.png` ×16（松散颗粒/团块质感，AI 底图染色）
+- 16 色采用 Minecraft 标准混凝土色板（比羊毛更饱和）；两张白色底图经亮度归一压淡杂质斑点，
+  程序化染成 16 色，四边无缝
+
 台阶、楼梯、墙、压力板、按钮等形状变体无需单独贴图，游戏会自动复用上方原方块贴图。
 
 除菌核侧面的动画 sprite sheet（256×2048，8 帧纵向排列）与床贴图（512×512，原版 64×64 的
@@ -99,18 +107,18 @@
 
 ---
 
-# Realistic Terrain, Stone, Wood, Minerals & Fabric 256X Resource Pack (English)
+# Realistic Terrain, Stone, Wood, Minerals, Fabric & Concrete 256X Resource Pack (English)
 
 A high-resolution realistic resource pack for **Minecraft Java Edition**. It expands the original
 16×16 block textures to 256×256 (16× the detail), pursuing a more lifelike look for grass, stone,
-wood, minerals and fabric while preserving the recognizability of vanilla blocks. **Made specifically
-for Minecraft Java Edition 1.21.11** (`pack_format: 75`, supports formats 75–75, covering
+wood, minerals, fabric and concrete while preserving the recognizability of vanilla blocks. **Made
+specifically for Minecraft Java Edition 1.21.11** (`pack_format: 75`, supports formats 75–75, covering
 1.21.11-pre1 through 1.21.11). Older versions cannot load this pack.
 
 ## Overview
 Vanilla textures are limited at low resolution and become blurry or blocky when enlarged. This pack
-remakes the textures for five major categories — terrain, stone, wood, mineral/compressed blocks,
-and fabric (wool / beds / banners) — for a finer, more realistic look, while staying strictly
+remakes the textures for six major categories — terrain, stone, wood, mineral/compressed blocks,
+fabric (wool / beds / banners), and concrete & concrete powder — for a finer, more realistic look, while staying strictly
 compatible with vanilla models and block mappings. Shape variants such as slabs, stairs, walls and
 pressure plates automatically reuse the base block textures and need no separate files.
 
@@ -124,6 +132,9 @@ pressure plates automatically reuse the base block textures and need no separate
 - **AI fabric + procedural dyeing**: Wool / bed / banner are based on AI-generated realistic
   fabric, cropped to remove watermarks and made seamless via edge blending, then dyed with the
   standard Minecraft 16-color palette — 48 textures, accurate colors, zero seams.
+- **Concrete & powder**: 2 AI realistic bases (dense cement / loose powder) with brightness
+  normalization to soften impurities, dyed into 16 concrete + 16 powder textures — distinct
+  looks and seamless edges.
 - **Borderless grass**: Removes the edge-lighting halo from the source image, so tiled grass
   shows no grid outlines.
 - **Seamless at the source**: Log sides use periodic noise for bark and cracks, eliminating
@@ -131,7 +142,7 @@ pressure plates automatically reuse the base block textures and need no separate
 - **Flowing stem animation**: A vertical sprite sheet paired with `.png.mcmeta`, smoothed with
   `interpolate` and looped without visible jumps.
 
-The pack contains **131 textures + 2 animation metadata files**.
+The pack contains **163 textures + 2 animation metadata files**.
 
 ## Main Texture List
 - grass_block_top.png Grass block top (realistic grass, borderless: edge-lighting halo removed, no grid outlines when tiled)
@@ -191,6 +202,12 @@ The pack contains **131 textures + 2 animation metadata files**.
   cyan / light_blue / blue / purple / magenta / pink, using the standard Minecraft wool palette
 - Carpet, wool slabs and wool stairs have no separate textures — the game reuses the matching wool texture
 - Harness (1.21.4+) is not included yet
+
+## Concrete & Concrete Powder (16 colors, AI base + dyed)
+- Concrete: `block/<color>_concrete.png` ×16 (dense cement surface with fine pores and aggregate)
+- Concrete powder: `block/<color>_concrete_powder.png` ×16 (loose granular/clumpy texture)
+- 16 colors use the standard Minecraft concrete palette (more saturated than wool); two white AI
+  bases are brightness-normalized to soften impurities, then dyed — all seamlessly tileable
 
 Shape variants such as slabs, stairs, walls, pressure plates and buttons need no separate textures —
 the game automatically reuses the base block textures listed above.

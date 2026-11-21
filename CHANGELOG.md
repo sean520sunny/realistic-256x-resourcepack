@@ -5,6 +5,17 @@ A realistic 256X resource pack for Minecraft Java Edition 1.21.11. This file rec
 
 ---
 
+## v1.3.0 — 混凝土与混凝土粉末 / Concrete & Concrete Powder
+
+新增 16 色混凝土与 16 色混凝土粉末共 32 张贴图，材质包扩充至 163 张。
+
+Adds 32 textures — 16-color concrete and 16-color concrete powder — bringing the pack to 163 textures.
+
+- **混凝土**：`block/<color>_concrete.png` ×16，致密水泥表面（AI 写实底图 + 标准色板染色，四边无缝）
+- **混凝土粉末**：`block/<color>_concrete_powder.png` ×16，松散颗粒质感（AI 写实底图 + 标准色板染色，四边无缝）
+- **Concrete**: 16 dense-cement textures; **Concrete powder**: 16 loose-granular textures; both from AI bases dyed with the standard 16-color palette, seamless on all edges
+- 材质包仍面向 Minecraft Java 版 1.21.11（`pack_format: 75`）/ Still targets Minecraft Java 1.21.11
+
 ## v1.2.1 — 修复床贴图 / Bed Texture Fix
 
 修复 v1.2.0 中床贴图缺失白色枕头的问题，按原版 UV 布局重建 16 色床贴图。
