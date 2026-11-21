@@ -1,0 +1,12 @@
+# 中间产物与 AI 原素材（体积大，不入库）
+_tex_source/
+_wood_out/
+_stem_static/
+realistic-256x-pack/
+
+# 工作记忆
+.workbuddy/
+
+# Python 缓存
+__pycache__/
+*.pyc
