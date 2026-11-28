@@ -5,6 +5,16 @@ A realistic 256X resource pack for Minecraft Java Edition 1.21.11. This file rec
 
 ---
 
+## v1.4.0 — 花卉全集 / All Flowers
+
+新增 17 种小型花与 5 种大型花共 22 种花，材质包扩充至 190 张贴图。
+
+Adds 22 flowers — 17 small and 5 tall — bringing the pack to 190 textures.
+
+- **小型花 / Small flowers**：蒲公英、金蒲公英、虞美人、兰花、绒球葱、蓝花美耳草、滨菊、矢车菊、铃兰、凋灵玫瑰、火把花、闭合/张开眼眸花，以及红/橙/白/粉四种郁金香
+- **大型花 / Tall flowers**：向日葵、丁香、玫瑰丛、牡丹、瓶子草，各含 top/bottom 两片贴图
+- 全部基于 AI 写实底图抠黑底制作，256×256 透明背景；同形态花共用底图染色（四种郁金香、三种蓝花各出自一张底图）
+
 ## v1.3.0 — 混凝土与混凝土粉末 / Concrete & Concrete Powder
 
 新增 16 色混凝土与 16 色混凝土粉末共 32 张贴图，材质包扩充至 163 张。

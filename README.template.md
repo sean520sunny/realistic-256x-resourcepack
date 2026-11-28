@@ -1,14 +1,15 @@
-# 写实地形、石材、木材、矿物、织物与混凝土 256X 材质包
+# 写实地形、石材、木材、矿物、织物、混凝土与花卉 256X 材质包
 
 这是一个给 Minecraft Java 版用的高清写实材质包。原版 16×16 的方块贴图被放大到 256×256，
-细节多了 16 倍。草、石头、木头、矿物、织物和混凝土都按真实质感重做，但方块的形状和辨识度
+细节多了 16 倍。草、石头、木头、矿物、织物、混凝土和花都按真实质感重做，但方块的形状和辨识度
 保持原样，不会出现认不出是什么方块的情况。
 
 只支持 1.21.11，pack_format 75，覆盖 1.21.11-pre1 到正式版。更早的游戏版本加载不了。
 
 ## 为什么做这个包
-原版贴图分辨率低，直接放大就糊了，还容易出现一块一块的色块。所以我按六类方块重画了一遍：
-地形、石材、木材、矿物和压缩方块、织物（羊毛、床、旗帜），以及混凝土和混凝土粉末。
+原版贴图分辨率低，直接放大就糊了，还容易出现一块一块的色块。所以我按七类方块重画了一遍：
+地形、石材、木材、矿物和压缩方块、织物（羊毛、床、旗帜）、混凝土和混凝土粉末，
+以及全部 17 种小型花和 5 种大型花。
 
 模型和方块的对应关系没有动。台阶、楼梯、墙、压力板这些形状变体不用单独做贴图，
 游戏自己会调用基础方块的贴图。
@@ -22,12 +23,14 @@
   16 色板调色，一共 48 张，颜色准，接缝也处理掉了。
 - 混凝土和粉末用了 2 张 AI 底图，一张致密水泥、一张松散粉粒。把亮度归一化压掉杂质以后
   再染成 16 色，32 张放一起质感区分很清楚。
+- 花一共 22 种（17 小 + 5 大）。AI 画写实花，抠掉黑底，同形态的花共用一张底图染色，
+  比如四种郁金香、三种蓝花都是从一张底图变出来的。大花拆成上下两片，对应原版的 top/bottom。
 - 草地边缘原来有一圈素材自带的白框，已经修掉了，平铺看不出网格。
 - 原木侧面的树皮和裂纹改成周期噪声生成，接缝在生成的时候就不存在，不是事后补的。
 - 绯红和诡异菌核的侧面做成了流动动画。纵向 sprite sheet 配 .png.mcmeta，用 interpolate
   过渡，循环起来看不出接缝。
 
-最终一共 163 张贴图，外加 2 个动画元数据文件。
+最终一共 190 张贴图，外加 2 个动画元数据文件。
 
 ## 主要贴图清单
 - grass_block_top.png 草方块顶部（写实草地，去掉了素材边缘的白框，平铺没有网格轮廓）
@@ -92,6 +95,13 @@
 - 16 色用的是 Minecraft 标准混凝土色板，比羊毛更饱和一些。两张白色底图先做亮度归一化，
   把杂质斑点压淡，再程序染成 16 色，四边无缝
 
+## 花（17 种小型 + 5 种大型，AI 底图 + 染色）
+- 小型花：`block/<name>.png` ×17 —— 蒲公英、金蒲公英、虞美人、兰花、绒球葱、蓝花美耳草、
+  滨菊、矢车菊、铃兰、凋灵玫瑰、火把花、闭合眼眸花、张开眼眸花，以及红/橙/白/粉四种郁金香
+- 大型花：`block/<name>_top.png` + `block/<name>_bottom.png` ×5 —— 向日葵、丁香、玫瑰丛、牡丹、瓶子草
+- 都是 AI 写实底图抠黑底做成，256×256 透明背景；四种郁金香共用一张白花底图染色，
+  大花按原版拆成上下两片
+
 台阶、楼梯、墙、压力板、按钮这些形状变体不用单独做贴图，游戏会自动调用上面这些原方块贴图。
 
 除了菌核侧面的动画 sprite sheet（256×2048，8 帧纵向排列）和床贴图，其它都是 256×256。
@@ -111,20 +121,21 @@
 
 ---
 
-# Realistic Terrain, Stone, Wood, Minerals, Fabric & Concrete 256X Resource Pack
+# Realistic Terrain, Stone, Wood, Minerals, Fabric, Concrete & Flowers 256X Resource Pack
 
 A high-resolution realistic resource pack for Minecraft Java Edition. Vanilla 16×16 block
-textures are scaled up to 256×256, which is 16× the detail. Grass, stone, wood, minerals, fabric
-and concrete have all been redone with a more realistic feel, while the shapes and recognizability
-of the blocks stay intact, so you can still tell what you are looking at.
+textures are scaled up to 256×256, which is 16× the detail. Grass, stone, wood, minerals, fabric,
+concrete and flowers have all been redone with a more realistic feel, while the shapes and
+recognizability of the blocks stay intact, so you can still tell what you are looking at.
 
 Only 1.21.11 is supported. packs format 75, covering 1.21.11-pre1 through the release. Older
 versions will not load the pack.
 
 ## Why this pack exists
 Vanilla textures are low resolution. Enlarge them and they go blurry, and you start seeing visible
-blocks of flat color. So I redrew six categories: terrain, stone, wood, mineral and compressed
-blocks, fabric (wool, beds, banners), and concrete plus concrete powder.
+blocks of flat color. So I redrew seven categories: terrain, stone, wood, mineral and compressed
+blocks, fabric (wool, beds, banners), concrete plus concrete powder, and all 17 small flowers
+and 5 tall flowers.
 
 The model and block mappings are untouched. Slabs, stairs, walls and pressure plates need no
 separate textures, since the game pulls the base block texture on its own.
@@ -142,6 +153,10 @@ separate textures, since the game pulls the base block texture on its own.
 - Concrete and powder use 2 AI bases, one dense cement and one loose powder. Brightness is
   normalized to soften impurities before dyeing into 16 colors. The 32 textures read quite
   differently side by side.
+- There are 22 flowers in all (17 small, 5 tall). AI draws the realistic blooms, the black
+  background is cut out, and flowers of the same shape share one base with a different dye —
+  the four tulips and three blue flowers each come from a single source. Tall flowers are split
+  into top and bottom halves to match the vanilla layout.
 - The grass edge used to carry a white halo from the source image. That is cleaned up, so tiling
   shows no grid.
 - Log sides now generate bark and cracks from periodic noise. The seam never exists in the first
@@ -149,7 +164,7 @@ separate textures, since the game pulls the base block texture on its own.
 - Crimson and warped stem sides are animated. A vertical sprite sheet with .png.mcmeta, smoothed
   with interpolate, loops without a visible jump.
 
-All in all that is 163 textures plus 2 animation metadata files.
+All in all that is 190 textures plus 2 animation metadata files.
 
 ## Main texture list
 - grass_block_top.png Grass block top (realistic grass, source halo removed, no grid when tiled)
@@ -215,6 +230,15 @@ All in all that is 163 textures plus 2 animation metadata files.
 - Concrete powder: `block/<color>_concrete_powder.png` ×16 (loose grains and clumps, dyed from an AI base)
 - Colors follow the standard Minecraft concrete palette, a bit more saturated than wool. Both white
   bases are brightness-normalized to soften impurities, then dyed into 16 colors, seamless on all edges.
+
+## Flowers (17 small + 5 tall, AI base then dyed)
+- Small flowers: `block/<name>.png` ×17 — dandelion, golden dandelion, poppy, blue orchid, allium,
+  azure bluet, oxeye daisy, cornflower, lily of the valley, wither rose, torchflower, closed and
+  open eyeblossom, plus red / orange / white / pink tulips
+- Tall flowers: `block/<name>_top.png` + `block/<name>_bottom.png` ×5 — sunflower, lilac, rose bush,
+  peony, pitcher plant
+- All are AI realistic bases with the black background cut out, 256×256 with transparency. The four
+  tulips share one white base with different dyes; tall flowers are split into top and bottom halves.
 
 Shape variants like slabs, stairs, walls, pressure plates and buttons need no separate textures.
 The game reuses the base block textures listed above.
